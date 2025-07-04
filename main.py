@@ -88,66 +88,133 @@ class Lecturer(Mentor):
 # Лекторы
 lecturer = Lecturer('Олег', 'Смирнов')
 lecturer.courses_attached += ['Python']
+
 lecturer2 = Lecturer('Владислав', 'Бывалый')
-lecturer2.courses_attached += ['Python']
+lecturer2.courses_attached += ['Java']
+
+lecturer3 = Lecturer('Ярослав', 'Орденоносец')
+lecturer3.courses_attached += ['Python']
+
+lecturer4 = Lecturer('Нестор', 'Махно')
+lecturer4.courses_attached += ['Java']
 
 # Студенты
 best_student = Student('Тим', 'Бернес-Ли', 'your_gender')
 best_student.courses_in_progress += ['Python']
+best_student.finished_courses += ['Введение в программирование']
 
 student = Student('Евгений', 'Странников', 'your_gender')
 student.courses_in_progress += ['Python']
+student.finished_courses += ['Введение в программирование']
+
+student2 = Student('Ильич', 'Лен', 'your_gender')
+student2.courses_in_progress += ['Java']
+student2.finished_courses += ['Введение в программирование']
 
 # Оценки студентов лекторам
 best_student.rate_lecturer(lecturer, 'Python', 10)
 best_student.rate_lecturer(lecturer, 'Python', 10)
 best_student.rate_lecturer(lecturer, 'Python', 10)
 
-student.rate_lecturer(lecturer2, 'Python', 7)
-student.rate_lecturer(lecturer2, 'Python', 6)
-student.rate_lecturer(lecturer2, 'Python', 1)
+best_student.rate_lecturer(lecturer3, 'Python', 5)
+best_student.rate_lecturer(lecturer3, 'Python', 8)
+best_student.rate_lecturer(lecturer3, 'Python', 7)
+
+student.rate_lecturer(lecturer, 'Python', 10)
+student.rate_lecturer(lecturer, 'Python', 9)
+student.rate_lecturer(lecturer, 'Python', 10)
+
+student.rate_lecturer(lecturer3, 'Python', 7)
+student.rate_lecturer(lecturer3, 'Python', 6)
+student.rate_lecturer(lecturer3, 'Python', 1)
+
+student2.rate_lecturer(lecturer2, 'Java', 8)
+student2.rate_lecturer(lecturer2, 'Java', 7)
+student2.rate_lecturer(lecturer2, 'Java', 9)
+
+student2.rate_lecturer(lecturer4, 'Java', 10)
+student2.rate_lecturer(lecturer4, 'Java', 2)
+student2.rate_lecturer(lecturer4, 'Java', 4)
 
 # Эксперты
 good_reviewer = Reviewer('Some', 'Buddy')
 good_reviewer.courses_attached += ['Python']
+good_reviewer.courses_attached += ['Java']
+
 bad_reviewer = Reviewer('Some', 'Buddy')
 bad_reviewer.courses_attached += ['Python']
+bad_reviewer.courses_attached += ['Java']
 
 # Оценки экспертов студентам
 good_reviewer.rate_hw(best_student, 'Python', 10)
 good_reviewer.rate_hw(best_student, 'Python', 10)
 good_reviewer.rate_hw(best_student, 'Python', 10)
 
+good_reviewer.rate_hw(student, 'Python', 9)
+good_reviewer.rate_hw(student, 'Python', 6)
+good_reviewer.rate_hw(student, 'Python', 3)
+
+bad_reviewer.rate_hw(best_student, 'Python', 8)
+bad_reviewer.rate_hw(best_student, 'Python', 9)
+bad_reviewer.rate_hw(best_student, 'Python', 8)
+
 bad_reviewer.rate_hw(student, 'Python', 2)
 bad_reviewer.rate_hw(student, 'Python', 3)
 bad_reviewer.rate_hw(student, 'Python', 1)
 
-# Средние оценки Лекторов
-print(lecturer.average_grades())
-print(lecturer2.average_grades())
+good_reviewer.rate_hw(student2, 'Java', 8)
+good_reviewer.rate_hw(student2, 'Java', 9)
+good_reviewer.rate_hw(student2, 'Java', 9)
 
-# Средние оценки студентов
-print(best_student.average_grades())
-print(student.average_grades())
+bad_reviewer.rate_hw(student2, 'Java', 6)
+bad_reviewer.rate_hw(student2, 'Java', 9)
+bad_reviewer.rate_hw(student2, 'Java', 10)
 
-# Сравнение оценок лекторов
-print(lecturer > lecturer2)
-print(lecturer == lecturer2)
-print(lecturer < lecturer2)
+# Вывод студентов
+print(f'Студенты:\n\n{best_student} \n\n{student}\n\n{student2}\n\n')
 
-# Сравнение оценок студентов
-print(best_student > student)
-print(best_student == student)
-print(best_student < student)
+# Вывод лекторов
+print(f'Леторы:\n\n{lecturer} \n\n{lecturer2}\n\n{lecturer3}\n\n{lecturer4}\n\n')
 
-# Вывод информации лекторов
-print(lecturer)
-print(lecturer2)
+# Сравнение студентов по средним оценкам
+print(f'Результат сравнения студентов по средним оценкам:'
+      f'{best_student.name} {best_student.surname} > {student.name} {student.surname} = {best_student > student}\n')
 
-# Вывод информации экспертов
-print(good_reviewer)
-print(bad_reviewer)
+# Сравнение лекторов по средним оценкам
+print(f'Результат сравнения лекторов по средним оценкам:'
+      f'{lecturer.name} {lecturer.surname} > {lecturer3.name} {lecturer3.surname} = {lecturer > lecturer3}\n')
 
-# Вывод информации студентов
-print(student)
-print(best_student)
+# Списки студентов и лекторов
+student_list = [best_student, student, student2]
+
+lecturer_list = [lecturer, lecturer2, lecturer3, lecturer4]
+
+# Функция для подсчета средней оценки студентов
+def student_rating(student_list, course_name):
+    sum_all = 0
+    count_all = 0
+    for stud in student_list:
+        if stud.courses_in_progress == [course_name]:
+            sum_all += stud.average_grades()
+            count_all += 1
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+# Функция для подсчета средней оценки лекторов
+def lecturer_rating(lecturer_list, course_name):
+    sum_all = 0
+    count_all = 0
+    for lect in lecturer_list:
+        if lect.courses_attached == [course_name]:
+            sum_all += lect.average_grades()
+            count_all += 1
+    average_for_all = sum_all / count_all
+    return average_for_all
+
+# Вывод средних оценок по всем студентам определенного курса
+print(f'Средняя оценка по всем студентам по курсу Python: \n{student_rating(student_list,'Python')}\n')
+print(f'Средняя оценка по всем студентам по курсу Java: \n{student_rating(student_list,'Java')}\n')
+
+# Вывод средних оценок по всем лекторам определенного курса
+print(f'Средняя оценка по всем лекторам по курсу Python: \n{lecturer_rating(lecturer_list,'Python')}\n')
+print(f'Средняя оценка по всем лекторам по курсу Java: \n{lecturer_rating(lecturer_list,'Java')}\n')
